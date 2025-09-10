@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/png" href="../img/titlelogo.png"/>
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>DD - Configurações</title>
+</head>
+<header class="main-header">
+    <div class="header-content">
+      <div class="nav_logo">Diagnóstico<span>Digital</span></div>
+      <nav class="nav-buttons">
+        <a href="../ui/index.html"><button>Voltar</button></a>
+      </nav>
+    </div>
+</header>
+<body>
+    <main class="container">
+      <div class="header-content">
+      <div class="container-title">Configurações</div>
+      <nav class="container-delete">
+        <a onclick="deletar()"><i class="ri-delete-bin-6-line"></i></a>
+      </nav>
+      </div>
+    <form id="formConfiguracoes">
+      <div class="input-field">
+        <i class="fas fa-key"></i>
+        <input type="text" id="id" name="id" readonly />
+      </div>
+      <div class="input-field">
+        <i class="far fa-calendar-alt"></i>
+        <input type="date" id="datanasc" name="datanasc" placeholder="Data de Nascimento" required/>
+      </div>
+      <div class="input-field">
+        <i class="fas fa-user"></i>
+        <input type="text" id="nome" name="nome" required />
+      </div>
+      <div class="input-field">
+        <i class="fas fa-id-card-alt"></i>
+        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "11" id="cpf" name="cpf" placeholder="CPF" required/>
+      </div>
+      <div class="input-field">
+        <i class="fas fa-envelope"></i>
+        <input type="email" id="email" name="email" readonly/>
+      </div>
+      <div class="input-field">
+        <i class="fas fa-phone"></i>
+        <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength = "11" id="telefone" name="telefone" placeholder="Telefone" required/>
+      </div>
+      <div class="input-field">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="senha" name="senha" placeholder="Senha"/>
+        <i class="far fa-eye" id="togglePassword" style="cursor: pointer;"></i>
+      </div>
+      <div class="input-field">
+        <i class="fas fa-map-marker-alt"></i>
+        <input type="text" id="endereco" name="endereco" placeholder="Digite seu endereço" required/>
+      </div>
+        <button type="submit">Salvar Alterações</button>
+    </form>
+  </main>
+</body>
+<script src="script.js"></script>
+</html>

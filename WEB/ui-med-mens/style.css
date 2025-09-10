@@ -1,0 +1,298 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Paleta de cores */
+:root{
+    --primary-color: #0056b3;
+    --primary-color-dark:#007bff;
+    --primary-color-light:#e9f7f7;
+    --secondary-color:#fb923c;
+    --secundary-color-dark: #c5671a;
+    --text-dark:#333333;
+    --text-ligth:#a3a3a3;
+    --primary-dark: #000000;
+    --primary-dark-light: #918989bb;
+    --white:#ffffff;
+    --icons: #dfdfdf;
+    --max-width:1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+a {
+  font-size: .8rem;
+}
+
+a:hover {
+  color: var(--primary-color);
+  transition: .3s;
+}
+
+.main-header {
+  background: linear-gradient(250deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  padding: 20px 40px;
+  color: var(--secondary-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  box-shadow: 0 4px 9px var(--primary-color);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav_logo span{
+    color: var(--secondary-color);
+    transition: 0.5s;
+}
+
+.nav_logo span:hover{
+    color: var(--primary-color-light);
+}
+
+.nav_logo {
+    font-size: 50px;
+    font-weight: 600;
+    color: var(--primary-color-light);
+    transition: 1.5s;
+}
+
+.nav_logo:hover{
+    color: var(--secondary-color);
+}
+
+.nav-buttons button {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+.nav-buttons button:hover {
+  background: var(--secundary-color-dark);
+}
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 140px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: var(--primary-color-light);
+}
+
+main.form-wrapper {
+  background-color: var(--white);
+  padding: 3rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.493);
+  width: 90%;
+  max-width: 700px;
+}
+
+/* Title */
+.container-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+h1 {
+  text-align: center;
+  color: var(--primary-color);
+  font-size: 1.4rem;
+  margin-bottom: 24px;
+}
+
+form {
+  background: #ffffff00;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-rows: auto;
+  grid-gap: 20px;
+  /* 20px vertical, 20px horizontal */
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  /* Centraliza o formulário dentro do container */
+  padding: 20px;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 30px 25px; /* 30px vertical, 25px horizontal */
+}
+
+.input-field {
+  width: 100%;
+  background: var(--icons);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 1rem;
+  height: 48px;
+  gap: 10px;
+  /* margin-bottom removido pois o gap do grid já cria espaçamento */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.input-field input {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+  font-size: 1rem;
+  color: var(--primary-dark);
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+
+.input-field input::placeholder {
+  color: #555;
+  font-weight: 500;
+  transition: color 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.input-field i {
+  text-align: center;
+  line-height: 55px;
+  color: var(--primary-dark-light);
+  font-size: 1.5rem;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 50px;
+  border: none;
+  background-color: var(--secondary-color);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  margin-top: 10px;
+  box-shadow: 0 4px 9px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn:hover {
+  background-color: var(--secundary-color-dark);
+  transition: 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  .main-header {
+    padding: 10px 20px;
+  }
+
+  .nav_logo {
+    font-size: 1.5rem;
+  }
+
+  .nav-buttons button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  main.form-wrapper {
+    padding: 2rem 1rem;
+  }
+}
+
+.message-field {
+  width: 100%;
+  background: var(--icons);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 1rem;
+  gap: 10px;
+  min-height: 120px;
+}
+
+.message-field textarea {
+  border: none;
+  background: transparent;
+  outline: none;
+  flex: 1;
+  font-size: 1rem;
+  color: var(--primary-dark);
+  resize: vertical;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  width: 100%;
+  min-height: 100px;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: var(--primary-dark-light) transparent; /* Firefox */
+}
+
+.message-field textarea::placeholder {
+  color: #555;
+  font-weight: 500;
+}
+
+.message-field i {
+  margin-top: 4px;
+  color: var(--primary-dark-light);
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+.erro {
+    color: #a31717;
+    font-weight: bold;
+}

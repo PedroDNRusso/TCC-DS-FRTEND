@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Paleta de cores */
+:root{
+    --primary-color: #0056b3;
+    --primary-color-dark:#007bff;
+    --primary-color-light:#e9f7f7;
+    --secondary-color:#fb923c;
+    --secundary-color-dark: #c5671a;
+    --text-dark:#333333;
+    --text-ligth:#a3a3a3;
+    --primary-dark: #000000;
+    --primary-dark-light: #918989bb;
+    --white:#ffffff;
+    --icons: #dfdfdf;
+    --max-width:1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+a {
+  font-size: .8rem;
+}
+
+a:hover {
+  color: var(--primary-color);
+  transition: .3s;
+}
+
+.main-header {
+  background: linear-gradient(250deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  padding: 20px 40px;
+  color: var(--secondary-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  box-shadow: 0 4px 9px var(--primary-color);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav_logo span{
+    color: var(--secondary-color);
+    transition: 0.5s;
+}
+
+.nav_logo span:hover{
+    color: var(--primary-color-light);
+}
+
+.nav_logo {
+    font-size: 50px;
+    font-weight: 600;
+    color: var(--primary-color-light);
+    transition: 1.5s;
+}
+
+.nav_logo:hover{
+    color: var(--secondary-color);
+}
+
+.nav-buttons button {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-buttons button:hover {
+  background: var(--secundary-color-dark);
+}
+
+#cardsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 900px; /* mantém container largo mas fixo */
+  padding: 20px 20px 20px 40px; 
+  margin-top: 120px; 
+  align-items: flex-start; 
+  position: fixed; 
+  top: 0;
+  left: 0;
+  height: 250vh; 
+  overflow-y: auto; 
+  background: transparent; 
+}
+
+.atestado-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow:
+    0 4px 8px rgba(0, 86, 179, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: 32px 48px; /* aumentei padding para dar mais espaço interno */
+  width: 100%; /* faz o card ocupar a largura total do container */
+  max-width: 860px; /* limite de largura maior para o card */
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: default;
+}
+
+.atestado-card:hover {
+  box-shadow:
+    0 12px 24px rgba(0, 86, 179, 0.2),
+    0 6px 12px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+}
+
+/* demais estilos permanecem iguais */
+.atestado-card h3 {
+  margin: 0 0 16px 0;
+  font-weight: 700;
+  font-size: 2.2rem; /* aumentei o tamanho do título */
+  color: var(--primary-color);
+  letter-spacing: 0.03em;
+}
+
+.atestado-card p {
+  margin: 10px 0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.atestado-card strong {
+  color: var(--secondary-color);
+}
+
+.atestado-card .btn-baixar-pdf {
+  margin-top: 24px;
+  padding: 14px 36px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  background: var(--primary-color);
+  border: none;
+  border-radius: 30px;
+  box-shadow: 0 6px 12px rgba(0, 86, 179, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.atestado-card .btn-baixar-pdf:hover {
+  background: var(--primary-color-dark);
+  box-shadow: 0 8px 16px rgba(0, 86, 179, 0.5);
+}

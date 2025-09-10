@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="icon" href="../img/titlelogo.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DD - Seu DoctorAI</title>
+    <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+    <header class="main-header">
+        <div class="header-content">
+          <div class="nav_logo">Diagnóstico<span>Digital</span></div>
+          <nav class="nav-buttons">
+                <a href="../ui/index.html"><button>Voltar</button></a>
+          </nav>
+        </div>
+    </header>
+    <main>
+        <section>
+            <div>
+                <h2 class="title">Assistente de Paciente</h2>
+                <p>Pergunte sobre sintomas e possiveis causas para o seu DoctorAI</p>
+                <div id="aiResponse" class="hidden">
+                    <div class="response-content"></div>
+                </div>
+                <form id="form">
+                    <input id="questionInput" type="text" placeholder="Digite seus sintomas ou possiveis causas..." required>
+                    <div class="askButton">
+                        <button id="askButton">Perguntar</button>
+                    </div>
+                </form>
+                <div class="powered-by">
+                  <h3>Alimentada com dados via Gemini</h3>
+                  <i class="ri-google-fill"></i>
+                </div>
+            </div>
+        </section>
+    </main>
+    <script src="https://unpkg.com/showdown/dist/showdown.min.js"></script>
+    <script src="./script.js"></script>
+</body>
+</html>

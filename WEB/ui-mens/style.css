@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* Paleta de cores */
+:root{
+    --primary-color: #0056b3;
+    --primary-color-dark:#007bff;
+    --primary-color-light:#e9f7f7;
+    --secondary-color:#fb923c;
+    --secundary-color-dark: #c5671a;
+    --text-dark:#333333;
+    --text-ligth:#a3a3a3;
+    --primary-dark: #000000;
+    --primary-dark-light: #918989bb;
+    --white:#ffffff;
+    --icons: #dfdfdf;
+    --max-width:1200px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--white);
+  font-family: 'Poppins', sans-serif;
+}
+
+a {
+  font-size: .8rem;
+}
+
+a:hover {
+  color: var(--primary-color);
+  transition: .3s;
+}
+
+.main-header {
+  background: linear-gradient(250deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+  padding: 20px 40px;
+  color: var(--secondary-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  box-shadow: 0 4px 9px var(--primary-color);
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav_logo span{
+    color: var(--secondary-color);
+    transition: 0.5s;
+}
+
+.nav_logo span:hover{
+    color: var(--primary-color-light);
+}
+
+.nav_logo {
+    font-size: 50px;
+    font-weight: 600;
+    color: var(--primary-color-light);
+    transition: 1.5s;
+}
+
+.nav_logo:hover{
+    color: var(--secondary-color);
+}
+
+.nav-buttons button {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  margin-left: 10px;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.nav-buttons button:hover {
+  background: var(--secundary-color-dark);
+}
+
+.erro {
+    color: #a31717;
+    font-weight: bold;
+}
+
+#cardsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  padding: 140px 40px 40px 40px; /* top padding maior para não sobrepor o header fixo */
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+#cardsContainer::-webkit-scrollbar {
+  height: 10px;
+}
+
+#cardsContainer::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 20px;
+}
+
+#cardsContainer::-webkit-scrollbar-track {
+  background-color: var(--primary-color-light);
+}
+
+.mensagem-card {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow:
+    0 4px 8px rgba(0, 86, 179, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.06);
+  padding: 32px 48px;
+  width: 100%;
+  max-width: 860px;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  cursor: default;
+  position: relative; /* necessário para posicionar o botão */
+}
+
+.delete-button {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  padding: 6px 14px;
+  border-radius: 50px;
+  background-color: #e63946;
+  border: none;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.delete-button:hover {
+  background-color: #c1121f;
+  transform: scale(1.05);
+}
+
+/* Header Responsivo */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 12px 20px;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .nav_logo {
+        font-size: 32px;
+    }
+
+    .nav-buttons {
+        width: 100%;
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+    }
+
+    .nav-buttons button {
+        padding: 8px 16px;
+        margin: 5px 0;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-header {
+        padding: 8px 12px;
+    }
+
+    .nav_logo {
+        font-size: 26px;
+    }
+
+    .nav-buttons {
+        gap: 6px;
+    }
+
+    .nav-buttons button {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
