@@ -68,7 +68,7 @@ header{
         hsla(211, 100%, 35%, 0.412),
         #007bff63
     ),
-    url(./WEB/img/header.jpg);
+    url(../img/header.jpg);
     background-position: center center;
     background-size: cover;
     background-repeat: no-repeat;
