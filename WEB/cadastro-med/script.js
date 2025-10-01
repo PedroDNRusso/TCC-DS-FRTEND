@@ -1,4 +1,4 @@
-const uri = 'https://tcc-ds-bkend.vercel.app'; // ✅ agora aponta pro backend hospedado no Vercel
+const uri = 'https://tcc-ds-bkend.vercel.app'; 
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#senha");
 
@@ -9,6 +9,7 @@ togglePassword.addEventListener("click", function (e) {
   this.classList.toggle("fa-eye-slash");
 });
 
+function cadastrar() {
 const form = document.querySelector('form');
 form.addEventListener('submit', function(e) {
   e.preventDefault();
@@ -40,3 +41,4 @@ form.addEventListener('submit', function(e) {
       alert("Erro ao conectar com o servidor!");
     });
 });
+}

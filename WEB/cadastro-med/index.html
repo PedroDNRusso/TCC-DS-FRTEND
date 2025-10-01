@@ -45,7 +45,7 @@
             <i class="fas fa-id-card-alt"></i>
             <input type="number" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="11" name="cpf" autocomplete="cpf" placeholder="CPF" required="yes">
           </div>
-          <input type="submit" value="Cadastrar" class="btn solid">
+          <input onclick="cadastrar()" type="submit" value="Cadastrar" class="btn solid">
         </form>
         <div class="signup-footer">
           <p>Já tem uma conta? <a href="../login-med/index.html" class="footer-link">Entrar</a></p>
