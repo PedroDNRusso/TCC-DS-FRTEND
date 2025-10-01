@@ -1,23 +1,8 @@
-const uri = "https://tcc-ds-bkend.vercel.app";
-const token = sessionStorage.getItem('token');
-
-document.addEventListener("DOMContentLoaded", () => {
-    const medico = JSON.parse(sessionStorage.getItem("medico"));
-    const token = sessionStorage.getItem("token");
-
-    if (!medico || !token) {
-        window.location.href = "../login-med/index.html";
-        return;
-    }
-    document.getElementById("id").textContent = medico.id;
-    document.getElementById("nome").textContent = medico.nome;
-    document.getElementById("crm").textContent = medico.crm;
-
-    verificarToken();
-});
+const uri = "https://tcc-ds-bkend.vercel.app"; 
+const medico = JSON.parse(sessionStorage.getItem("medico"));
 
 async function verificarToken() {
-    const token = sessionStorage.getItem("token"); // garante pegar o token atualizado
+    const token = sessionStorage.getItem("token"); 
     if (!token) {
         window.location.href = "../login-med/index.html";
         return;
@@ -38,32 +23,64 @@ async function verificarToken() {
         console.error("Erro ao verificar token:", err);
     }
 }
-   
-const form = document.getElementById("atestadoForm");
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const data = Object.fromEntries(formData.entries());
-      const token = sessionStorage.getItem("token");
 
-      try {
+if (!medico || !sessionStorage.getItem("token")) {
+    window.location.href = "../login-med/index.html";
+} else {
+    document.getElementById("id").value = medico.id;
+    document.getElementById("nome").value = medico.nome;
+    document.getElementById("crm").value = medico.crm;
+    verificarToken(); 
+}
+
+const form = document.getElementById("atestadoForm");
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    for (const key in data) {
+        if (!data[key] || data[key].trim() === '') {
+            alert(`O campo "${key}" não pode ser vazio.`);
+            return;
+        }
+    }
+
+    try {
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+            alert("Você precisa estar logado para criar um atestado.");
+            window.location.href = "../login-med/index.html";
+            return;
+        }
+
         const response = await fetch(`${uri}/funcmed`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json",
-            ...(token ? { "Authorization": "Bearer " + token } : {})
-          },
-          body: JSON.stringify(data),
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify(data)
         });
 
         if (response.ok) {
-          alert("Atestado criado com sucesso!");
-          form.reset();
+            alert("Atestado criado com sucesso!");
+            form.reset();
         } else {
-          const error = await response.json();
-          alert("Erro: " + (error.message || "Não foi possível criar o atestado."));
+            let errorMessage;
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.message || JSON.stringify(errorData);
+            } catch {
+                errorMessage = await response.text();
+            }
+            alert("Erro ao criar atestado: " + errorMessage);
+            console.error("Erro no backend:", errorMessage);
         }
-      } catch (error) {
+
+    } catch (error) {
         console.error("Erro ao enviar:", error);
         alert("Erro ao conectar com o servidor.");
-      }
-    });
+    }
+});
