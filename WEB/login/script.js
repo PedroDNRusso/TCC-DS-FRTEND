@@ -1,4 +1,4 @@
-const uri = 'https://tcc-ds-bkend.vercel.app'; // ✅ agora usa o backend no Vercel
+const uri = 'https://tcc-ds-bkend.vercel.app'; 
 
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#senha");
@@ -16,7 +16,7 @@ function login() {
         };
 
         try {
-            const response = await fetch(`${uri}/pacienteslgn`, { // ✅ backend do Vercel
+            const response = await fetch(`${uri}/pacienteslgn`, { 
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dados),
@@ -28,7 +28,6 @@ function login() {
                 document.getElementById('loginError').style.color = 'green';
                 document.getElementById('loginError').textContent = 'Login bem-sucedido!';
 
-                // Salva dados do usuário (sem senha) e token JWT
                 sessionStorage.setItem("usuario", JSON.stringify({
                     id: data.id,
                     nome: data.nome,
@@ -43,7 +42,7 @@ function login() {
                 }
 
                 setTimeout(() => {
-                    window.location.href = '../ui/index.html'; // Redireciona para a interface
+                    window.location.href = '../ui/index.html'; 
                 }, 1000);
             } else {
                 document.getElementById('loginError').style.color = 'red';

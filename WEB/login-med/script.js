@@ -1,4 +1,4 @@
-const uri = 'http://localhost:3000'; 
+const uri = 'https://tcc-ds-bkend.vercel.app'; 
 
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#senha");
