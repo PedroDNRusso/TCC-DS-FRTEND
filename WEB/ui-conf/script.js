@@ -1,8 +1,7 @@
-const uri = "https://tcc-ds-bkend.vercel.app"; // Backend no Vercel
+const uri = "https://tcc-ds-bkend.vercel.app";
 
-// Função para verificar se o token é válido
 async function verificarToken() {
-    const token = sessionStorage.getItem("token"); // pega token atualizado
+    const token = sessionStorage.getItem("token");
     if (!token) {
         window.location.href = "../login/index.html";
         return;
@@ -24,7 +23,6 @@ async function verificarToken() {
     }
 }
 
-// Preencher campos do usuário e verificar token ao carregar a página
 document.addEventListener("DOMContentLoaded", () => {
     const usuario = JSON.parse(sessionStorage.getItem("usuario"));
     const token = sessionStorage.getItem("token");
@@ -34,11 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Preenche campos do formulário
     document.getElementById("id").value = usuario.id;
     document.getElementById("nome").value = usuario.nome;
     document.getElementById("email").value = usuario.email;
-    // ⚠️ Não preencher o campo senha com valor do usuário
     document.getElementById("cpf").value = usuario.cpf;
     document.getElementById("datanasc").value = usuario.data_nascimento;
     document.getElementById("telefone").value = usuario.telefone;
@@ -47,12 +43,11 @@ document.addEventListener("DOMContentLoaded", () => {
     verificarToken();
 });
 
-// Atualizar informações do usuário
 document.getElementById("formConfiguracoes").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const usuario = JSON.parse(sessionStorage.getItem("usuario")); // ✅ pegar usuário atual
-    const token = sessionStorage.getItem("token"); // ✅ pegar token atualizado
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+    const token = sessionStorage.getItem("token");
 
     if (!usuario?.id) {
         alert("Usuário não encontrado. Faça login novamente.");
@@ -62,7 +57,7 @@ document.getElementById("formConfiguracoes").addEventListener("submit", async fu
 
     const nome = document.getElementById("nome").value;
     const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value; // senha em texto puro
+    const senha = document.getElementById("senha").value;
     const cpf = document.getElementById("cpf").value;
     const data_nascimento = document.getElementById("datanasc").value;
     const endereco = document.getElementById("endereco").value;
@@ -79,7 +74,7 @@ document.getElementById("formConfiguracoes").addEventListener("submit", async fu
                 id: usuario.id,
                 nome,
                 email,
-                senha: senha || null, // se não alterar, backend mantém a senha
+                senha: senha || null,
                 cpf,
                 telefone,
                 data_nascimento,
@@ -88,12 +83,9 @@ document.getElementById("formConfiguracoes").addEventListener("submit", async fu
         });
 
         const result = await response.json();
-        console.log("📥 Resposta do servidor:", result);
 
         if (response.ok) {
             alert("Informações atualizadas com sucesso!");
-
-            // ⚠️ Atualiza sessionStorage sem senha
             sessionStorage.setItem("usuario", JSON.stringify({
                 id: usuario.id,
                 nome,
@@ -112,7 +104,6 @@ document.getElementById("formConfiguracoes").addEventListener("submit", async fu
     }
 });
 
-// Deletar conta do usuário
 function deletar() {
     const usuario = JSON.parse(sessionStorage.getItem("usuario"));
     const token = sessionStorage.getItem("token");
@@ -145,7 +136,6 @@ function deletar() {
         });
 }
 
-// Toggle de visibilidade da senha
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#senha");
 togglePassword.addEventListener("click", function () {
@@ -154,7 +144,6 @@ togglePassword.addEventListener("click", function () {
     this.classList.toggle("fa-eye-slash");
 });
 
-// Logout
 function logout() {
     sessionStorage.clear();
     window.location.href = "../login/index.html";
