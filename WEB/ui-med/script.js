@@ -1,45 +1,49 @@
-const medico = JSON.parse(sessionStorage.getItem("medico"));
-const token = sessionStorage.getItem("token");
+const uri = "https://tcc-ds-bkend.vercel.app";
 
 async function verificarToken() {
-  if (!token) {
-    window.location.href = "../login-med/index.html";
-    return;
-  }
-  try {
-    // Faz uma requisição protegida para testar o token
-    const response = await fetch("http://localhost:3000/medicos", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    });
-    if (response.status === 401 || response.status === 500) {
-      // Token expirado ou inválido
-      sessionStorage.removeItem("medico");
-      sessionStorage.removeItem("token");
-      window.location.href = "../../index.html";
+    const token = sessionStorage.getItem("token"); // garante pegar o token atualizado
+    if (!token) {
+        window.location.href = "../login-med/index.html";
+        return;
     }
-  } catch (err) {
-    // Se houver erro de conexão, não faz nada
-  }
-}
+    try {
+        const response = await fetch(`${uri}/medicos`, {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token }
+        });
 
-if (!medico || !token) {
-  window.location.href = "../login-med/index.html";
-} else {
-  document.getElementById("id").textContent = medico.id;
-  document.getElementById("nome").textContent = medico.nome;
-  document.getElementById("email").textContent = medico.email;
-  document.getElementById("crm").textContent = medico.crm;
-  // Não exibir senha por segurança
-  verificarToken(); // Verifica o token ao carregar
+        if (response.status === 401) {
+            sessionStorage.clear();
+            window.location.href = "../login-med/index.html";
+        } else if (!response.ok) {
+            console.error("Erro desconhecido ao verificar token:", response.status);
+        }
+    } catch (err) {
+        console.error("Erro ao verificar token:", err);
+    }
 }
 
 function logout() {
-  sessionStorage.removeItem("medico");
-  window.location.href = "../../index.html";
+    sessionStorage.clear();
+    window.location.href = "../login-med/index.html";
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const medico = JSON.parse(sessionStorage.getItem("medico"));
+    const token = sessionStorage.getItem("token");
+
+    if (!medico || !token) {
+        window.location.href = "../login-med/index.html";
+        return;
+    }
+    document.getElementById("id").textContent = medico.id;
+    document.getElementById("email").textContent = medico.email;
+    document.getElementById("nome").textContent = medico.nome;
+    document.getElementById("crm").textContent = medico.crm;
+
+
+    verificarToken();
+});
 
 async function buscarPacientePorId() {
         const id = document.getElementById('searchIdPac').value;
