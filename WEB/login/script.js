@@ -1,4 +1,4 @@
-const uri = 'https://tcc-ds-bkend.vercel.app'; 
+const uri = 'https://tcc-ds-bkend.vercel.app'; // ✅ agora usa o backend no Vercel
 
 const togglePassword = document.querySelector("#togglePassword");
 const password = document.querySelector("#senha");
