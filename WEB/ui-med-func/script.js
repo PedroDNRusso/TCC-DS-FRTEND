@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("nome").textContent = medico.nome;
     document.getElementById("crm").textContent = medico.crm;
 
-
     verificarToken();
 });
 
@@ -47,6 +46,11 @@ const form = document.getElementById("atestadoForm");
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
       const token = sessionStorage.getItem("token");
+
+        document.getElementById("id").textContent = medico.id;
+        document.getElementById("email").textContent = medico.email;
+        document.getElementById("nome").textContent = medico.nome;
+        document.getElementById("crm").textContent = medico.crm;
 
       try {
         const response = await fetch(`${uri}/funcmed`, {
