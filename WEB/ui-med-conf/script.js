@@ -134,7 +134,7 @@ function deletar() {
         sessionStorage.clear();
         window.location.href = "../../index.html";
       } else {
-        alert("Erro ao excluir conta: " + data.message);
+        alert("Mensagem: " + data.message);
       }
     })
     .catch((err) => {
