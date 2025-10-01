@@ -22,7 +22,7 @@ form.addEventListener('submit', function(e) {
     cpf: form.cpf.value,
   };
 
-  fetch(`${uri}/medicos`, { // ✅ envia para o Vercel
+  fetch(`${uri}/medicos`, { 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(dados)
