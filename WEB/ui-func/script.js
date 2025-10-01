@@ -37,12 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function buscarAtestadosDoPaciente(pacienteId) {
   try {
-    const response = await fetch(`http://localhost:3000/funcmed/paciente/${pacienteId}`,{
+    const response = await fetch(`${uri}/funcmed/paciente/${pacienteId}`, {
       method: "GET",
-      headers: { "Content-Type": "application/json",
+      headers: {
+        "Content-Type": "application/json",
         ...(token ? { "Authorization": "Bearer " + token } : {})
-       }
+      }
     });
+
     if (!response.ok) {
       throw new Error("Erro ao buscar atestados");
     }
@@ -94,15 +96,16 @@ async function buscarAtestadosDoPaciente(pacienteId) {
 function baixarPDFAtestado(atestado) {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF();
+  const img = new Image(); // ✅ Corrigido (antes estava faltando a declaração)
+  const logoUrl = '../img/logomarca.png';
 
-  const logoUrl = '../img/logomarca.png'; 
   img.src = logoUrl;
-  img.onload = function() {
+  img.onload = function () {
     pdf.addImage(img, 'PNG', 80, 5, 50, 20);
 
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(20);
-    pdf.setTextColor(22, 82, 99); 
+    pdf.setTextColor(22, 82, 99);
     pdf.text("Atestado Médico", 105, 35, { align: 'center' });
 
     pdf.setFont('times', 'normal');
@@ -122,14 +125,12 @@ function baixarPDFAtestado(atestado) {
     pdf.setTextColor(120, 120, 120);
     pdf.text('Gerado por TCC-DS', 105, 285, { align: 'center' });
 
-    pdf.save(`atestadoDD.pdf`);
+    pdf.save(`atestado_${atestado.id}.pdf`);
   };
 
   if (img.complete) {
     img.onload();
   }
 }
-
-document.addEventListener('DOMContentLoaded', () => {
   buscarAtestadosDoPaciente(usuario.id);
-});
+
