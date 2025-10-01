@@ -1,32 +1,39 @@
-// Verifica se usuário está logado
-const usuario = JSON.parse(sessionStorage.getItem("usuario"));
-const token = sessionStorage.getItem("token");
+const uri = "https://tcc-ds-bkend.vercel.app";
 
 async function verificarToken() {
-  if (!token) {
-    window.location.href = "../login/index.html";
-    return;
-  }
-  try {
-    const response = await fetch("http://localhost:3000/pacientes", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    });
-    if (response.status === 401 || response.status === 500) {
-      sessionStorage.removeItem("usuario");
-      sessionStorage.removeItem("token");
-      window.location.href = "../home/index.html";
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+        window.location.href = "../login/index.html";
+        return;
     }
-  } catch (err) {}
+    try {
+        const response = await fetch(`${uri}/pacientes`, {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        if (response.status === 401) {
+            sessionStorage.clear();
+            window.location.href = "../login/index.html";
+        } else if (!response.ok) {
+            console.error("Erro desconhecido ao verificar token:", response.status);
+        }
+    } catch (err) {
+        console.error("Erro ao verificar token:", err);
+    }
 }
 
-if (!usuario || !token) {
-  window.location.href = "../login/index.html";
-} else {
-  verificarToken();
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+    const token = sessionStorage.getItem("token");
+
+    if (!usuario || !token) {
+        window.location.href = "../login/index.html";
+        return;
+    }
+    verificarToken();
+});
+
 
 async function buscarAtestadosDoPaciente(pacienteId) {
   try {
@@ -72,7 +79,6 @@ async function buscarAtestadosDoPaciente(pacienteId) {
         <button class="btn-baixar-pdf">Baixar PDF</button>
       `;
 
-      // Adiciona evento para baixar PDF
       const btn = card.querySelector('.btn-baixar-pdf');
       btn.addEventListener('click', () => baixarPDFAtestado(atestado));
 
@@ -85,25 +91,20 @@ async function buscarAtestadosDoPaciente(pacienteId) {
   }
 }
 
-// Função para gerar e baixar PDF de um atestado específico
 function baixarPDFAtestado(atestado) {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF();
 
-  // Adiciona logo no topo
-  const logoUrl = '../img/logomarca.png'; // Caminho relativo à pasta do script
-  const img = new Image();
+  const logoUrl = '../img/logomarca.png'; 
   img.src = logoUrl;
   img.onload = function() {
-    pdf.addImage(img, 'PNG', 80, 5, 50, 20); // Centralizado no topo
+    pdf.addImage(img, 'PNG', 80, 5, 50, 20);
 
-    // Título estilizado
     pdf.setFont('helvetica', 'bold');
     pdf.setFontSize(20);
-    pdf.setTextColor(22, 82, 99); // Azul escuro
+    pdf.setTextColor(22, 82, 99); 
     pdf.text("Atestado Médico", 105, 35, { align: 'center' });
 
-    // Dados do atestado com estilos
     pdf.setFont('times', 'normal');
     pdf.setFontSize(13);
     pdf.setTextColor(40, 40, 40);
@@ -117,20 +118,18 @@ function baixarPDFAtestado(atestado) {
     pdf.text(`Motivo: ${atestado.motivo}`, 20, y); y += 10;
     pdf.text(`Assinatura do Médico: ${atestado.ass_med}`, 20, y);
 
-    // Rodapé
     pdf.setFontSize(10);
     pdf.setTextColor(120, 120, 120);
     pdf.text('Gerado por TCC-DS', 105, 285, { align: 'center' });
 
     pdf.save(`atestadoDD.pdf`);
   };
-  // Se a imagem já estiver carregada do cache
+
   if (img.complete) {
     img.onload();
   }
 }
 
-// Executa a busca quando a página carrega
 document.addEventListener('DOMContentLoaded', () => {
   buscarAtestadosDoPaciente(usuario.id);
 });
