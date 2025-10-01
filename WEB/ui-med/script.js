@@ -18,7 +18,7 @@ async function verificarToken() {
       // Token expirado ou inválido
       sessionStorage.removeItem("medico");
       sessionStorage.removeItem("token");
-      window.location.href = "/index.html";
+      window.location.href = "../../index.html";
     }
   } catch (err) {
     // Se houver erro de conexão, não faz nada
@@ -38,7 +38,7 @@ if (!medico || !token) {
 
 function logout() {
   sessionStorage.removeItem("medico");
-  window.location.href = "../home/index.html";
+  window.location.href = "../../index.html";
 }
 
 async function buscarPacientePorId() {
