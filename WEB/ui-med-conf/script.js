@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("id").value = medico.id;
     document.getElementById("nome").value = medico.nome;
     document.getElementById("email").value = medico.email;
+    document.getElementById("crm").value = medico.crm;
     document.getElementById("cpf").value = medico.cpf;
     document.getElementById("datanasc").value = medico.data_nascimento;
     document.getElementById("telefone").value = medico.telefone;
