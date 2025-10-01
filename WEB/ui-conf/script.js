@@ -1,33 +1,36 @@
 const uri = "https://tcc-ds-bkend.vercel.app"; // ✅ agora usa o backend no Vercel
 
-const usuario = JSON.parse(sessionStorage.getItem("usuario"));
-const token = sessionStorage.getItem("token");
-
 async function verificarToken() {
-  if (!token) {
-    window.location.href = "../login/index.html";
-    return;
-  }
-  try {
-    const response = await fetch(`${uri}/pacientes`, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    });
-    if (response.status === 401 || response.status === 500) {
-      sessionStorage.removeItem("usuario");
-      sessionStorage.removeItem("token");
-      window.location.href = "../home/index.html";
+    const token = sessionStorage.getItem("token"); // garante pegar o token atualizado
+    if (!token) {
+        window.location.href = "../login/index.html";
+        return;
     }
-  } catch (err) {
-    console.error("Erro ao verificar token:", err);
-  }
+    try {
+        const response = await fetch(`${uri}/pacientes`, {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        if (response.status === 401) {
+            sessionStorage.clear();
+            window.location.href = "../login/index.html";
+        } else if (!response.ok) {
+            console.error("Erro desconhecido ao verificar token:", response.status);
+        }
+    } catch (err) {
+        console.error("Erro ao verificar token:", err);
+    }
 }
 
-if (!usuario || !token) {
-  window.location.href = "../login/index.html";
-} else {
+document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+    const token = sessionStorage.getItem("token");
+
+    if (!usuario || !token) {
+        window.location.href = "../login/index.html";
+        return;
+    }
   document.getElementById("id").value = usuario.id;
   document.getElementById("nome").value = usuario.nome;
   document.getElementById("email").value = usuario.email;
@@ -36,8 +39,10 @@ if (!usuario || !token) {
   document.getElementById("datanasc").value = usuario.data_nascimento;
   document.getElementById("telefone").value = usuario.telefone;
   document.getElementById("endereco").value = usuario.endereco;
-  verificarToken();
-}
+
+    verificarToken();
+});
+
 
 document.getElementById("formConfiguracoes").addEventListener("submit", async function (e) {
   e.preventDefault();

@@ -1,4 +1,4 @@
-const API_URL = "https://tcc-ds-bkend.vercel.app";
+const uri = "https://tcc-ds-bkend.vercel.app";
 
 async function verificarToken() {
     const token = sessionStorage.getItem("token"); // garante pegar o token atualizado
@@ -7,7 +7,7 @@ async function verificarToken() {
         return;
     }
     try {
-        const response = await fetch(`${API_URL}/pacientes`, {
+        const response = await fetch(`${uri}/pacientes`, {
             method: "GET",
             headers: { "Authorization": "Bearer " + token }
         });
