@@ -1,4 +1,5 @@
 const uri = "https://tcc-ds-bkend.vercel.app";
+const token = sessionStorage.getItem('token');
 
 async function verificarToken() {
     const token = sessionStorage.getItem("token"); // garante pegar o token atualizado
