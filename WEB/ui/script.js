@@ -38,5 +38,5 @@ if (!usuario || !token) {
 function logout() {
   sessionStorage.removeItem("usuario");
   sessionStorage.removeItem("token");
-  window.location.href = "/index.html";
+  window.location.href = "../login/index.html";
 }
