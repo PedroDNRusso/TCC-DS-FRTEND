@@ -1,8 +1,8 @@
-const uri = "https://tcc-ds-bkend.vercel.app"; 
-const medico = JSON.parse(sessionStorage.getItem("medico"));
+const uri = "https://tcc-ds-bkend.vercel.app";
+const token = sessionStorage.getItem('token');
 
 async function verificarToken() {
-    const token = sessionStorage.getItem("token"); 
+    const token = sessionStorage.getItem("token"); // garante pegar o token atualizado
     if (!token) {
         window.location.href = "../login-med/index.html";
         return;
@@ -24,63 +24,48 @@ async function verificarToken() {
     }
 }
 
-if (!medico || !sessionStorage.getItem("token")) {
-    window.location.href = "../login-med/index.html";
-} else {
-    document.getElementById("id").value = medico.id;
-    document.getElementById("nome").value = medico.nome;
-    document.getElementById("crm").value = medico.crm;
-    verificarToken(); 
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const medico = JSON.parse(sessionStorage.getItem("medico"));
+    const token = sessionStorage.getItem("token");
 
-const form = document.getElementById("atestadoForm");
-form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
-    for (const key in data) {
-        if (!data[key] || data[key].trim() === '') {
-            alert(`O campo "${key}" não pode ser vazio.`);
-            return;
-        }
+    if (!medico || !token) {
+        window.location.href = "../login-med/index.html";
+        return;
     }
+    document.getElementById("id").textContent = medico.id;
+    document.getElementById("nome").textContent = medico.nome;
+    document.getElementById("crm").textContent = medico.crm;
 
-    try {
-        const token = sessionStorage.getItem("token");
-        if (!token) {
-            alert("Você precisa estar logado para criar um atestado.");
-            window.location.href = "../login-med/index.html";
-            return;
-        }
 
+    verificarToken();
+});
+   
+const form = document.getElementById("atestadoForm");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      try {
         const response = await fetch(`${uri}/funcmed`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
-            },
-            body: JSON.stringify(data)
+          method: "POST",
+          headers: { "Content-Type": "application/json",
+            ...(token ? { "Authorization": "Bearer " + token } : {})
+          },
+          body: JSON.stringify(data),
         });
 
         if (response.ok) {
-            alert("Atestado criado com sucesso!");
-            form.reset();
+          alert("Atestado criado com sucesso!");
+          form.reset();
         } else {
-            let errorMessage;
-            try {
-                const errorData = await response.json();
-                errorMessage = errorData.message || JSON.stringify(errorData);
-            } catch {
-                errorMessage = await response.text();
-            }
-            alert("Erro ao criar atestado: " + errorMessage);
-            console.error("Erro no backend:", errorMessage);
+          const error = await response.json();
+          alert("Erro: " + (error.message || "Não foi possível criar o atestado."));
         }
-
-    } catch (error) {
+      } catch (error) {
         console.error("Erro ao enviar:", error);
         alert("Erro ao conectar com o servidor.");
-    }
-});
+      }
+    });
