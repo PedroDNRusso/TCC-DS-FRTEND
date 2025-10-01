@@ -1,48 +1,59 @@
-const medico = JSON.parse(sessionStorage.getItem("medico"));
-const token = sessionStorage.getItem("token");
+const uri = "https://tcc-ds-bkend.vercel.app";
 
 async function verificarToken() {
-  if (!token) {
-    window.location.href = "../login-med/index.html";
-    return;
-  }
-  try {
-    // Faz uma requisição protegida para testar o token
-    const response = await fetch("http://localhost:3000/medicos", {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    });
-    if (response.status === 401 || response.status === 500) {
-      // Token expirado ou inválido
-      sessionStorage.removeItem("medico");
-      sessionStorage.removeItem("token");
-      window.location.href = "../home/index.html";
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+        window.location.href = "../login-med/index.html";
+        return;
     }
-  } catch (err) {
-    // Se houver erro de conexão, não faz nada
-  }
+    try {
+        const response = await fetch(`${uri}/medicos`, {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        if (response.status === 401) {
+            sessionStorage.clear();
+            window.location.href = "../login-med/index.html";
+        } else if (!response.ok) {
+            console.error("Erro desconhecido ao verificar token:", response.status);
+        }
+    } catch (err) {
+        console.error("Erro ao verificar token:", err);
+    }
 }
 
-if (!medico || !token) {
-  window.location.href = "../login-med/index.html";
-} else {
-  document.getElementById("crm").value = medico.crm;
-  document.getElementById("id").value = medico.id;
-  document.getElementById("nome").value = medico.nome;
-  document.getElementById("email").value = medico.email;
-  // ⚠️ Não preencher o campo senha com valor do medico
-  document.getElementById("cpf").value = medico.cpf;
-  document.getElementById("telefone").value = medico.telefone;
-  document.getElementById("datanasc").value = medico.data_nascimento;
-  document.getElementById("endereco").value = medico.endereco;
-  document.getElementById("especialidade").value = medico.especialidade;
-  verificarToken(); // Verifica o token ao carregar
-}
+document.addEventListener("DOMContentLoaded", () => {
+    const medico = JSON.parse(sessionStorage.getItem("medico"));
+    const token = sessionStorage.getItem("token");
+
+    if (!medico || !token) {
+        window.location.href = "../login-med/index.html";
+        return;
+    }
+
+    document.getElementById("id").value = medico.id;
+    document.getElementById("nome").value = medico.nome;
+    document.getElementById("email").value = medico.email;
+    document.getElementById("cpf").value = medico.cpf;
+    document.getElementById("datanasc").value = medico.data_nascimento;
+    document.getElementById("telefone").value = medico.telefone;
+    document.getElementById("endereco").value = medico.endereco;
+
+    verificarToken();
+});
 
 document.getElementById("formConfiguracoes").addEventListener("submit", async function (e) {
-  e.preventDefault();
+    e.preventDefault();
+
+    const medico = JSON.parse(sessionStorage.getItem("medico"));
+    const token = sessionStorage.getItem("token");
+
+    if (!medico?.id) {
+        alert("Usuário não encontrado. Faça login novamente.");
+        window.location.href = "../login-med/index.html";
+        return;
+    }
   
   const nome = document.getElementById("nome").value;
   const crm = document.getElementById("crm").value;
@@ -55,7 +66,7 @@ document.getElementById("formConfiguracoes").addEventListener("submit", async fu
   const especialidade = document.getElementById("especialidade").value;
 
   try {
-    const response = await fetch(`http://localhost:3000/medicos/${medico.id}`, {
+    const response = await fetch(`${uri}/medicos/${medico.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -100,13 +111,16 @@ document.getElementById("formConfiguracoes").addEventListener("submit", async fu
 });
 
 function deletar() {
-  const id = medico.id;
-  if (!id || isNaN(Number(id))) {
-    alert("ID inválido ou ausente");
-    return;
-  }
+    const medico = JSON.parse(sessionStorage.getItem("medico"));
+    const token = sessionStorage.getItem("token");
 
-  fetch(`http://localhost:3000/medicos/${id}`, {
+    if (!medico?.id) {
+        alert("Usuário não encontrado.");
+        window.location.href = "../login-med/index.html";
+        return;
+    }
+
+  fetch(`${uri}/medicos/${medico.id}`, {
     method: "DELETE",
     headers: {
       ...(token ? { "Authorization": "Bearer " + token } : {})
@@ -116,8 +130,8 @@ function deletar() {
     .then((data) => {
       if (data.message === "Medico excluído com sucesso") {
         alert("Conta excluída com sucesso!");
-        sessionStorage.removeItem("medico");
-        window.location.href = "../home/index.html";
+        sessionStorage.clear();
+        window.location.href = "../../index.html";
       } else {
         alert("Erro ao excluir conta: " + data.message);
       }

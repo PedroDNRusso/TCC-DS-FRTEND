@@ -144,7 +144,3 @@ togglePassword.addEventListener("click", function () {
     this.classList.toggle("fa-eye-slash");
 });
 
-function logout() {
-    sessionStorage.clear();
-    window.location.href = "../login/index.html";
-}
