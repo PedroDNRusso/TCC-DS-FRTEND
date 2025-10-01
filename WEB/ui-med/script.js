@@ -1,6 +1,23 @@
 const uri = "https://tcc-ds-bkend.vercel.app";
 const token = sessionStorage.getItem('token');
 
+document.addEventListener("DOMContentLoaded", () => {
+    const medico = JSON.parse(sessionStorage.getItem("medico"));
+    const token = sessionStorage.getItem("token");
+
+    if (!medico || !token) {
+        window.location.href = "../login-med/index.html";
+        return;
+    }
+    document.getElementById("id").textContent = medico.id;
+    document.getElementById("email").textContent = medico.email;
+    document.getElementById("nome").textContent = medico.nome;
+    document.getElementById("crm").textContent = medico.crm;
+
+
+    verificarToken();
+});
+
 async function verificarToken() {
     const token = sessionStorage.getItem("token"); // garante pegar o token atualizado
     if (!token) {
@@ -29,23 +46,6 @@ function logout() {
     window.location.href = "../login-med/index.html";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const medico = JSON.parse(sessionStorage.getItem("medico"));
-    const token = sessionStorage.getItem("token");
-
-    if (!medico || !token) {
-        window.location.href = "../login-med/index.html";
-        return;
-    }
-    document.getElementById("id").textContent = medico.id;
-    document.getElementById("email").textContent = medico.email;
-    document.getElementById("nome").textContent = medico.nome;
-    document.getElementById("crm").textContent = medico.crm;
-
-
-    verificarToken();
-});
-
 async function buscarPacientePorId() {
     const id = document.getElementById('searchIdPac').value;
     const resultadoDiv = document.getElementById('resultadoBuscaPac');
@@ -55,7 +55,7 @@ async function buscarPacientePorId() {
         resultadoDiv.innerHTML = '<span class="erro">Informe um ID válido.</span>';
         return;
     }
-
+    const token = sessionStorage.getItem('token'); 
     try {
         const response = await fetch(`${uri}/pacientes/${id}`, {
             method: "GET",
@@ -64,7 +64,6 @@ async function buscarPacientePorId() {
                 ...(token ? { "Authorization": "Bearer " + token } : {})
             }
         });
-
         if (!response.ok) {
             resultadoDiv.innerHTML = '<span class="erro">Paciente não encontrado.</span>';
             return;
