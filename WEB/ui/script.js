@@ -10,9 +10,7 @@ async function verificarToken() {
   try {
     const response = await fetch(`${API_URL}/pacientes`, {
       method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
+      headers: { "Authorization": "Bearer " + token }
     });
 
     if (response.status === 401 || response.status === 500) {
@@ -31,8 +29,8 @@ if (!usuario || !token) {
   document.getElementById("nome").textContent = usuario.nome;
   document.getElementById("id").textContent = usuario.id;
   document.getElementById("email").textContent = usuario.email;
-  // Não exibir senha por segurança
-  verificarToken(); // Verifica o token ao carregar
+
+  verificarToken();
 }
 
 function logout() {
