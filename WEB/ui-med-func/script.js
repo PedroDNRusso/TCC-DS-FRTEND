@@ -49,7 +49,7 @@ const form = document.getElementById("atestadoForm");
       const token = sessionStorage.getItem("token");
 
       try {
-        const response = await fetch("https://tcc-ds-bkend.vercel.app/funcmed", {
+        const response = await fetch(`${uri}/funcmed`, {
           method: "POST",
           headers: { "Content-Type": "application/json",
             ...(token ? { "Authorization": "Bearer " + token } : {})
