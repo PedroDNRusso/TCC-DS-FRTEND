@@ -1,5 +1,6 @@
 const usuario = JSON.parse(sessionStorage.getItem("usuario"));
 const token = sessionStorage.getItem("token");
+const API_URL = "https://tcc-ds-bkend.vercel.app";
 
 async function verificarToken() {
   if (!token) {
@@ -7,21 +8,20 @@ async function verificarToken() {
     return;
   }
   try {
-    // Faz uma requisição protegida para testar o token
-    const response = await fetch("http://localhost:3000/pacientes", {
+    const response = await fetch(`${API_URL}/pacientes`, {
       method: "GET",
       headers: {
         "Authorization": "Bearer " + token
       }
     });
+
     if (response.status === 401 || response.status === 500) {
-      // Token expirado ou inválido
       sessionStorage.removeItem("usuario");
       sessionStorage.removeItem("token");
-      window.location.href = "../home/index.html";
+      window.location.href = "../login/index.html";
     }
   } catch (err) {
-    // Se houver erro de conexão, não faz nada
+    console.error("Erro ao verificar token:", err);
   }
 }
 
