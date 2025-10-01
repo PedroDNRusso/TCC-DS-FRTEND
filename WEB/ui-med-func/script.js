@@ -32,10 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "../login-med/index.html";
         return;
     }
-    document.getElementById("id").textContent = medico.id;
-    document.getElementById("nome").textContent = medico.nome;
-    document.getElementById("crm").textContent = medico.crm;
-
+    document.getElementById("id").value = medico.id;
+    document.getElementById("nome").value = medico.nome;
+    document.getElementById("crm").value = medico.crm;
 
     verificarToken();
 });
