@@ -1,4 +1,5 @@
 const uri = "https://tcc-ds-bkend.vercel.app";
+const usuario = JSON.parse(sessionStorage.getItem("usuario"));
 
 async function verificarToken() {
     const token = sessionStorage.getItem("token");
