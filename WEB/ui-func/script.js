@@ -1,36 +1,39 @@
-// 🌐 URL do backend hospedado no Vercel
 const uri = "https://tcc-ds-bkend.vercel.app";
 
-// 🧑‍💻 Dados da sessão
-const usuario = JSON.parse(sessionStorage.getItem("usuario"));
-const token = sessionStorage.getItem("token"); // ✅ Agora token é global
-
-// 🛡️ Verificar token de autenticação
 async function verificarToken() {
-  if (!usuario || !usuario.id || !token) {
-    sessionStorage.clear();
-    window.location.href = "../login/index.html";
-    return;
-  }
-
-  try {
-    const response = await fetch(`${uri}/pacientes`, {
-      method: "GET",
-      headers: {
-        "Authorization": "Bearer " + token
-      }
-    });
-
-    if (response.status === 401) {
-      sessionStorage.clear();
-      window.location.href = "../login/index.html";
-    } else if (!response.ok) {
-      console.error("Erro desconhecido ao verificar token:", response.status);
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+        window.location.href = "../login/index.html";
+        return;
     }
-  } catch (err) {
-    console.error("Erro ao verificar token:", err);
-  }
+    try {
+        const response = await fetch(`${uri}/pacientes`, {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        if (response.status === 401) {
+            sessionStorage.clear();
+            window.location.href = "../login/index.html";
+        } else if (!response.ok) {
+            console.error("Erro desconhecido ao verificar token:", response.status);
+        }
+    } catch (err) {
+        console.error("Erro ao verificar token:", err);
+    }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+    const token = sessionStorage.getItem("token");
+
+    if (!usuario || !token) {
+        window.location.href = "../login/index.html";
+        return;
+    }
+
+    verificarToken();
+});
 
 // 📄 Buscar todos os atestados do paciente logado
 async function buscarAtestadosDoPaciente(pacienteId) {
