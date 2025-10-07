@@ -1,4 +1,6 @@
 const uri = "https://tcc-ds-bkend.vercel.app";
+const token = sessionStorage.getItem("token");
+const medico = JSON.parse(sessionStorage.getItem("medico"));
 
 async function verificarToken() {
     const token = sessionStorage.getItem("token");
