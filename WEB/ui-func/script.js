@@ -14,7 +14,7 @@ async function verificarToken() {
   }
 
   try {
-    const response = await fetch(`${uri}/pacientes/${usuario.id}`, {
+    const response = await fetch(`${uri}/pacientes`, {
       method: "GET",
       headers: {
         "Authorization": "Bearer " + token
