@@ -141,14 +141,3 @@ function baixarPDFAtestado(atestado) {
     if (logo.complete) logo.onload();
 }
 
-// 🚀 Inicialização ao carregar a página
-document.addEventListener("DOMContentLoaded", () => {
-  if (!usuario || !token) {
-    window.location.href = "../login/index.html";
-    return;
-  }
-
-  verificarToken().then(() => {
-    buscarAtestadosDoPaciente(usuario.id);
-  });
-});
