@@ -33,8 +33,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     document.getElementById("id").value = medico.id;
-    document.getElementById("nome").value = medico.nome;
-    document.getElementById("crm").value = medico.crm;
 
     verificarToken();
 });
