@@ -1,75 +1,69 @@
+// 🌐 URL do backend hospedado no Vercel
 const uri = "https://tcc-ds-bkend.vercel.app";
+
+// 🧑‍💻 Dados da sessão
 const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+const token = sessionStorage.getItem("token"); // ✅ Agora token é global
 
+// 🛡️ Verificar token de autenticação
 async function verificarToken() {
-    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
-    const token = sessionStorage.getItem("token");
-    if (!token) {
-        window.location.href = "../login/index.html";
-        return;
-    }
-    try {
-        const response = await fetch(`${uri}/pacientes/${usuario.id}`, {
-            method: "GET",
-            headers: { "Authorization": "Bearer " + token }
-        });
+  if (!usuario || !usuario.id || !token) {
+    sessionStorage.clear();
+    window.location.href = "../login/index.html";
+    return;
+  }
 
-        if (response.status === 401) {
-            sessionStorage.clear();
-            window.location.href = "../login/index.html";
-        } else if (!response.ok) {
-            console.error("Erro desconhecido ao verificar token:", response.status);
-        }
-    } catch (err) {
-        console.error("Erro ao verificar token:", err);
+  try {
+    const response = await fetch(`${uri}/pacientes/${usuario.id}`, {
+      method: "GET",
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    });
+
+    if (response.status === 401) {
+      sessionStorage.clear();
+      window.location.href = "../login/index.html";
+    } else if (!response.ok) {
+      console.error("Erro desconhecido ao verificar token:", response.status);
     }
+  } catch (err) {
+    console.error("Erro ao verificar token:", err);
+  }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
-    const token = sessionStorage.getItem("token");
-
-    if (!usuario || !token) {
-        window.location.href = "../login/index.html";
-        return;
-    }
-    verificarToken();
-});
-
-
+// 📄 Buscar todos os atestados do paciente logado
 async function buscarAtestadosDoPaciente(pacienteId) {
   try {
     const response = await fetch(`${uri}/funcmed/paciente/${pacienteId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { "Authorization": "Bearer " + token } : {})
+        "Authorization": "Bearer " + token
       }
     });
 
-    if (!response.ok) {
-      throw new Error("Erro ao buscar atestados");
-    }
+    if (!response.ok) throw new Error("Erro ao buscar atestados");
 
     const atestados = await response.json();
 
-    if (atestados.length === 0) {
+    if (!atestados || atestados.length === 0) {
       alert("Nenhum atestado encontrado.");
       return;
     }
 
-    let container = document.getElementById('cardsContainer');
+    let container = document.getElementById("cardsContainer");
     if (!container) {
-      container = document.createElement('div');
-      container.id = 'cardsContainer';
+      container = document.createElement("div");
+      container.id = "cardsContainer";
       document.body.appendChild(container);
     }
 
-    container.innerHTML = '';
+    container.innerHTML = "";
 
-    atestados.forEach(atestado => {
-      const card = document.createElement('div');
-      card.className = 'atestado-card';
+    atestados.forEach((atestado) => {
+      const card = document.createElement("div");
+      card.className = "atestado-card";
 
       card.innerHTML = `
         <h3>Atestado #${atestado.id}</h3>
@@ -83,56 +77,75 @@ async function buscarAtestadosDoPaciente(pacienteId) {
         <button class="btn-baixar-pdf">Baixar PDF</button>
       `;
 
-      const btn = card.querySelector('.btn-baixar-pdf');
-      btn.addEventListener('click', () => baixarPDFAtestado(atestado));
+      const btn = card.querySelector(".btn-baixar-pdf");
+      btn.addEventListener("click", () => baixarPDFAtestado(atestado));
 
       container.appendChild(card);
     });
-
   } catch (error) {
     console.error(error.message);
     alert(error.message);
   }
 }
 
+// 📝 Gerar PDF de um atestado
 function baixarPDFAtestado(atestado) {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF();
-  const img = new Image(); // ✅ Corrigido (antes estava faltando a declaração)
-  const logoUrl = '../img/logomarca.png';
 
-  img.src = logoUrl;
-  img.onload = function () {
-    pdf.addImage(img, 'PNG', 80, 5, 50, 20);
+  // 📌 Logo
+    const logo = new Image();
+    logo.src = "../img/logomarca.png";
 
-    pdf.setFont('helvetica', 'bold');
-    pdf.setFontSize(20);
-    pdf.setTextColor(22, 82, 99);
-    pdf.text("Atestado Médico", 105, 35, { align: 'center' });
+    logo.onload = () => {
+      pdf.addImage(logo, "PNG", 80, 5, 50, 20);
 
-    pdf.setFont('times', 'normal');
-    pdf.setFontSize(13);
-    pdf.setTextColor(40, 40, 40);
-    let y = 50;
-    pdf.text(`ID: ${atestado.id}`, 20, y); y += 10;
-    pdf.text(`Médico: ${atestado.nome_med}`, 20, y); y += 10;
-    pdf.text(`CRM: ${atestado.crm_med}`, 20, y); y += 10;
-    pdf.text(`Data da Consulta: ${atestado.data ? new Date(atestado.data).toLocaleDateString() : '-'}`, 20, y); y += 10;
-    pdf.text(`Afastamento Inicial: ${atestado.afast_o ? new Date(atestado.afast_o).toLocaleDateString() : '-'}`, 20, y); y += 10;
-    pdf.text(`Afastamento Final: ${atestado.afast_c ? new Date(atestado.afast_c).toLocaleDateString() : '-'}`, 20, y); y += 10;
-    pdf.text(`Motivo: ${atestado.motivo}`, 20, y); y += 10;
-    pdf.text(`Assinatura do Médico: ${atestado.ass_med}`, 20, y);
+      // 📝 Título
+      pdf.setFont("helvetica", "bold");
+      pdf.setFontSize(20);
+      pdf.setTextColor(22, 82, 99);
+      pdf.text("Atestado Médico", 105, 35, { align: "center" });
 
-    pdf.setFontSize(10);
-    pdf.setTextColor(120, 120, 120);
-    pdf.text('Gerado por TCC-DS', 105, 285, { align: 'center' });
+      // 📋 Conteúdo
+      pdf.setFont("times", "normal");
+      pdf.setFontSize(13);
+      pdf.setTextColor(40, 40, 40);
 
-    pdf.save(`atestado_${atestado.id}.pdf`);
-  };
+      let y = 50;
+      const linha = (texto) => {
+        pdf.text(texto, 20, y);
+        y += 10;
+      };
 
-  if (img.complete) {
-    img.onload();
-  }
+      linha(`ID: ${atestado.id}`);
+      linha(`Médico: ${atestado.nome_med}`);
+      linha(`CRM: ${atestado.crm_med}`);
+      linha(`Data da Consulta: ${atestado.data ? new Date(atestado.data).toLocaleDateString() : "-"}`);
+      linha(`Afastamento Inicial: ${atestado.afast_o ? new Date(atestado.afast_o).toLocaleDateString() : "-"}`);
+      linha(`Afastamento Final: ${atestado.afast_c ? new Date(atestado.afast_c).toLocaleDateString() : "-"}`);
+      linha(`Motivo: ${atestado.motivo}`);
+      linha(`Assinatura do Médico: ${atestado.ass_med}`);
+
+      // 📎 Rodapé
+      pdf.setFontSize(10);
+      pdf.setTextColor(120, 120, 120);
+      pdf.text("Gerado automaticamente por TCC-DS", 105, 285, { align: "center" });
+
+      // 💾 Baixar arquivo
+      pdf.save(`atestado_${atestado.id}.pdf`);
+    };
+
+    if (logo.complete) logo.onload();
 }
-  buscarAtestadosDoPaciente(usuario.id);
 
+// 🚀 Inicialização ao carregar a página
+document.addEventListener("DOMContentLoaded", () => {
+  if (!usuario || !token) {
+    window.location.href = "../login/index.html";
+    return;
+  }
+
+  verificarToken().then(() => {
+    buscarAtestadosDoPaciente(usuario.id);
+  });
+});
