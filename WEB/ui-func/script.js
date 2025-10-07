@@ -35,7 +35,7 @@ async function verificarToken() {
 // 📄 Buscar todos os atestados do paciente logado
 async function buscarAtestadosDoPaciente(pacienteId) {
   try {
-    const response = await fetch(`${uri}/funcmed/paciente/${usuario.id}`, {
+    const response = await fetch(`${uri}/funcmed/paciente/${pacienteId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
