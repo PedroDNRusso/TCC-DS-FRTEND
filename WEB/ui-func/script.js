@@ -1,13 +1,14 @@
 const uri = "https://tcc-ds-bkend.vercel.app";
 
 async function verificarToken() {
+    const usuario = JSON.parse(sessionStorage.getItem("usuario"));
     const token = sessionStorage.getItem("token");
     if (!token) {
         window.location.href = "../login/index.html";
         return;
     }
     try {
-        const response = await fetch(`${uri}/pacientes`, {
+        const response = await fetch(`${uri}/pacientes/${usuario.id}`, {
             method: "GET",
             headers: { "Authorization": "Bearer " + token }
         });
