@@ -1,5 +1,6 @@
 const uri = "https://tcc-ds-bkend.vercel.app";
 const usuario = JSON.parse(sessionStorage.getItem("usuario"));
+const token = sessionStorage.getItem("token");
 
 async function verificarToken() {
     const token = sessionStorage.getItem("token");
@@ -37,13 +38,12 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // 📄 Buscar todos os atestados do paciente logado
-async function buscarAtestadosDoPaciente() {
+async function buscarAtestadosDoPaciente(pacienteId) {
   try {
     const response = await fetch(`${uri}/funcmed/paciente/${pacienteId}`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
+        ...(token ? { "Authorization": "Bearer " + token } : {})
       }
     });
 
